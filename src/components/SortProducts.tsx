@@ -5,23 +5,17 @@ export enum SortProducts {
 }
 
 export const SortProduct = ({ sort, setSort }) => {
-  if (sort === SortProducts.ASC) {
-    return (
-      <div>
-        <button onClick={() => setSort(SortProducts.DESC)}>
-          <MdNorth />
-        </button>
-      </div>
-    );
+  const handleClick = (e) => {
+    e.preventDefault();
+    setSort(sort === SortProducts.ASC ? SortProducts.DESC : SortProducts.ASC);
   }
-
-  if (sort === SortProducts.DESC) {
-    return (
-      <div>
-        <button onClick={() => setSort(SortProducts.ASC)}>
-          <MdSouth />
-        </button>
-      </div>
-    );
-  }
+  
+  return (
+    <div className="sort-products">
+      <button onClick={handleClick}>
+        {sort === SortProducts.ASC ? <MdSouth /> : <MdNorth />}
+      </button>
+    </div>
+  );
 };
+

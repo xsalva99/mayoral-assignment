@@ -1,4 +1,5 @@
-import axios from 'axios';
+// import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+
 import { ListProduct } from 'components/ListProduct';
 import { SearchBar } from 'components/SearchBar';
 import { SortProduct, SortProducts } from 'components/SortProducts';
@@ -9,10 +10,8 @@ export interface Product {
   id: number;
   title: string;
   price: number;
-  description: string;
-  category: string;
   image: string;
-  rating: Rating;
+  discount?: string;
 }
 
 export interface Rating {
@@ -36,35 +35,38 @@ const HomePage: NextPage = () => {
   const [search, setSearch] = useState('');
   /** Se usa para ordenar, por precio ascendente o descendente
    * Depende de lo que estemos mostrando cambia el icono
-  */
+   */
   const [sort, setSort] = useState(SortProducts.ASC);
-
-/**
- *Indicamos que estan cargando los datos para mostrar un texto
-  * //TODO: cambiar por un spinner
- */
+  /**
+   *Indicamos que estan cargando los datos para mostrar un texto
+   */
   const [loading, setLoading] = useState<boolean>(false);
+
+  function sortProducts(data: Product[], sort: SortProducts) {
+    switch (sort) {
+      case SortProducts.ASC:
+        return data.sort((a, b) => a.price - b.price);
+      case SortProducts.DESC:
+        return data.sort((a, b) => b.price - a.price);
+      default:
+        return data;
+    }
+  }
 
   const fetchData = async () => {
     setLoading(true);
     try {
-      const response = await axios.request(options);
-      if (products.length === 0) {
-        setProducts(response.data);
-        setData(response.data);
-      }
-      // if (data.length === 0) {
-      // }
-      console.log(response.data);
+      const response = await fetch('https://fakestoreapi.com/products');
+      const data = await response.json();
+      const list = sortProducts(data, sort);
+
+      setData(list);
+      setProducts(data);
     } catch (error) {
       console.log(error);
     }
     setLoading(false);
   };
-
-  /** Se usa para filtrar los productos, en caso de llegar el string vacío mostraremos todos los products
-   * Si no mostraremos el .filter
-   */
 
   useEffect(() => {
     if (products.length === 0 || data.length === 0 || search === '') {
@@ -73,20 +75,12 @@ const HomePage: NextPage = () => {
     const filteredData = products.filter((product) =>
       product.title.toLowerCase().includes(search.toLowerCase()),
     );
-    setData(filteredData);
+    setData([...filteredData]);
   }, [search]);
 
   useEffect(() => {
-    const sortedData = data.sort((a, b) => {
-      if (sort === SortProducts.ASC) {
-        return a.price - b.price;
-      }
-      if (sort === SortProducts.DESC) {
-        return b.price - a.price;
-      }
-      return 0;
-    });
-    setData(sortedData);
+    const sortedData = sortProducts(products, sort);
+    setData([...sortedData]);
   }, [sort]);
 
   return (
@@ -94,7 +88,13 @@ const HomePage: NextPage = () => {
       <SearchBar search={search} setSearch={setSearch} />
       <SortProduct sort={sort} setSort={setSort} />
       {loading && <p>Loading...</p>}
-      <ListProduct data={data}></ListProduct>
+      <ListProduct data={data.map((product, index) => {
+        if(index % 2 === 0){
+          return  {...product, discount: (product.price * 1.2).toFixed(2)};
+        }
+        return {...product};
+        
+      })}></ListProduct>
     </div>
   );
 };
