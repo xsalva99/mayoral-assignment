@@ -5,6 +5,7 @@ import { SearchBar } from 'components/SearchBar';
 import { SortProduct, SortProducts } from 'components/SortProducts';
 import { NextPage } from 'next';
 import { useEffect, useState } from 'react';
+import styles from '../css/index.module.css';
 
 export interface Product {
   id: number;
@@ -85,8 +86,10 @@ const HomePage: NextPage = () => {
 
   return (
     <div>
+      <header className={styles.search_container}>
       <SearchBar search={search} setSearch={setSearch} />
       <SortProduct sort={sort} setSort={setSort} />
+      </header>
       {loading && <p>Loading...</p>}
       <ListProduct data={data.map((product, index) => {
         if(index % 2 === 0){

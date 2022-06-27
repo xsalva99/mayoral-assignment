@@ -8,8 +8,8 @@ export const SearchBar = ({ search,setSearch }) => {
   };
 
   return (
-    <div>
-      <input type="text" value={search} onChange={handleChange} />
+    <div className={styles.search}>
+      <input className={styles.search__input}type="text" value={search} onChange={handleChange} />
     </div>
   );
 };
