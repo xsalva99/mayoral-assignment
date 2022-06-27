@@ -1,0 +1,16 @@
+.sort {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+}
+
+.sort__button {
+  border: 1px solid #ccc;
+  border-radius: 0.25em;
+  padding: 0.5em;
+  font-size: 1.25em;
+  font-family: sans-serif;
+  outline: none;
+}

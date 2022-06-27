@@ -1,4 +1,8 @@
-.search_container{
+.app {
+  display: inline;
+}
+
+.search_container {
   display: flex;
   justify-content: space-around;
   align-items: center;

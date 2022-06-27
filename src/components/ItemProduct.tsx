@@ -9,7 +9,7 @@ export const ItemProduct = ({ product }: { product: Product }) => {
     <li className={styles.item} key={product.id}>
       <div className={styles.headerContainer}>
         <div className={styles.image}>
-          <Image src={product.image} alt={product.title} width={500} height={500} />
+          <Image src={product.image} alt={product.title} width={250} height={250} />
         </div>
         <h2 className={styles.title}>{product.title}</h2>
       </div>

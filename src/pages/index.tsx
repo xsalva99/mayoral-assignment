@@ -20,11 +20,6 @@ export interface Rating {
   count: number;
 }
 
-const options = {
-  method: 'GET',
-  url: 'https://fakestoreapi.com/products',
-};
-
 const HomePage: NextPage = () => {
   //TODO la primera llamada HTTP se hace 2 veces
 
@@ -70,12 +65,14 @@ const HomePage: NextPage = () => {
   };
 
   useEffect(() => {
-    if (products.length === 0 || data.length === 0 || search === '') {
+    if (search === '') {
       fetchData();
     }
+
     const filteredData = products.filter((product) =>
       product.title.toLowerCase().includes(search.toLowerCase()),
     );
+
     setData([...filteredData]);
   }, [search]);
 
@@ -85,19 +82,24 @@ const HomePage: NextPage = () => {
   }, [sort]);
 
   return (
-    <div>
+    <div className={styles.app}>
       <header className={styles.search_container}>
-      <SearchBar search={search} setSearch={setSearch} />
-      <SortProduct sort={sort} setSort={setSort} />
+        <SearchBar search={search} setSearch={setSearch} />
+        <SortProduct sort={sort} setSort={setSort} />
       </header>
       {loading && <p>Loading...</p>}
-      <ListProduct data={data.map((product, index) => {
-        if(index % 2 === 0){
-          return  {...product, discount: (product.price * 1.2).toFixed(2)};
-        }
-        return {...product};
-        
-      })}></ListProduct>
+      {data.length !== 0 ? (
+        <ListProduct
+          data={data.map((product, index) => {
+            if (index % 2 === 0) {
+              return { ...product, discount: (product.price * 1.2).toFixed(2) };
+            }
+            return { ...product };
+          })}
+        ></ListProduct>
+      ) : (
+        <div>No hay productos disponibles</div>
+      )}
     </div>
   );
 };
