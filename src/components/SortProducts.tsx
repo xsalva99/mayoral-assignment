@@ -7,6 +7,7 @@ export enum SortProducts {
 }
 
 export const SortProduct = ({ sort, setSort }) => {
+  
   const handleClick = (e) => {
     e.preventDefault();
     setSort(sort === SortProducts.ASC ? SortProducts.DESC : SortProducts.ASC);

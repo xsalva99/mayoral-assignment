@@ -21,7 +21,6 @@ export interface Rating {
 }
 
 const HomePage: NextPage = () => {
-  //TODO la primera llamada HTTP se hace 2 veces
 
   /** Son los productos que se estan mostrando */
   const [data, setData] = useState<Product[]>([]);
